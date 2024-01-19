@@ -1,4 +1,4 @@
-# Edgeless Contracts
+# Pari Contracts
 
 ## Getting Started
 
