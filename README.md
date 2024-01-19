@@ -13,3 +13,5 @@ Users can then redeem their positions for cash at the end of the game
 
 All of the accounting logic below has already been created - we are using the same model and solidity contracts as polymarket
 https://github.com/mvllow/next-pwa-template
+
+![image](https://github.com/edgeless-network/pari/assets/156271310/b3df24e6-14a7-4eec-92c7-e9552b295852)
