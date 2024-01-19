@@ -2,7 +2,7 @@ pragma solidity ^0.5.1;
 import { Ownable } from "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import { IERC20 } from "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
 import { SafeMath } from "openzeppelin-solidity/contracts/math/SafeMath.sol";
-import { SignedSafeMath } from "@gnosis.pm/util-contracts/contracts/SignedSafeMath.sol";
+import { SignedSafeMath } from "openzeppelin-solidity/contracts/drafts/SignedSafeMath.sol";
 import { ERC1155TokenReceiver } from "@gnosis.pm/conditional-tokens-contracts/contracts/ERC1155/ERC1155TokenReceiver.sol";
 import { CTHelpers } from "@gnosis.pm/conditional-tokens-contracts/contracts/CTHelpers.sol";
 import { ConditionalTokens } from "@gnosis.pm/conditional-tokens-contracts/contracts/ConditionalTokens.sol";
@@ -13,7 +13,7 @@ contract MarketMaker is Ownable, ERC1155TokenReceiver {
     using SafeMath for uint;
     /*
      *  Constants
-     */    
+     */
     uint64 public constant FEE_RANGE = 10**18;
 
     /*
@@ -27,7 +27,7 @@ contract MarketMaker is Ownable, ERC1155TokenReceiver {
     event AMMFeeChanged(uint64 newFee);
     event AMMFeeWithdrawal(uint fees);
     event AMMOutcomeTokenTrade(address indexed transactor, int[] outcomeTokenAmounts, int outcomeTokenNetCost, uint marketFees);
-    
+
     /*
      *  Storage
      */
@@ -96,7 +96,7 @@ contract MarketMaker is Ownable, ERC1155TokenReceiver {
         stage = Stage.Paused;
         emit AMMPaused();
     }
-    
+
     function resume() public onlyOwner atStage(Stage.Paused) {
         stage = Stage.Running;
         emit AMMResumed();
