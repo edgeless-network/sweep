@@ -3,6 +3,9 @@ import "@typechain/hardhat";
 import "@nomicfoundation/hardhat-ethers";
 import "@nomicfoundation/hardhat-chai-matchers";
 import "hardhat-tracer";
+import "hardhat-deploy";
+import "dotenv/config";
+import "@nomicfoundation/hardhat-verify";
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -12,6 +15,37 @@ const config: HardhatUserConfig = {
       },
       {
         version: "0.5.5",
+      },
+    ],
+  },
+  networks: {
+    hardhat: {
+      deploy: ["./deploy/hardhat/"],
+    },
+    edgelessSepoliaTestnet: {
+      deploy: ["./deploy/edgelessSepoliaTestnet/"],
+      url: "https://edgeless-testnet.rpc.caldera.xyz/http",
+      chainId: 202,
+      accounts: [process.env.DEPLOYER_PRIVATE_KEY!],
+      verify: {
+        etherscan: {
+          apiUrl: "https://edgeless-testnet.explorer.caldera.xyz/",
+        },
+      },
+    },
+  },
+  etherscan: {
+    apiKey: {
+      edgelessTestnet: "You can enter any api key here, it doesn't matter ",
+    },
+    customChains: [
+      {
+        network: "edgelessTestnet",
+        chainId: 202,
+        urls: {
+          apiURL: "https://edgeless-testnet.explorer.caldera.xyz/api/",
+          browserURL: "https://edgeless-testnet.explorer.caldera.xyz/",
+        },
       },
     ],
   },
