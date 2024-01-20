@@ -34,6 +34,7 @@ contract Create2CloneFactory {
           let data := add(clone, 0x20)
           result := create2(0, data, len, salt)
         }
+        console.log(result);
 
         require(result != address(0), "create2 failed");
     }

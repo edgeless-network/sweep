@@ -1,7 +1,8 @@
 const web3 = require("web3");
 const { expect } = require("chai");
-const { Contract, randomBytes } = require("ethers");
+const { randomBytes } = require("ethers");
 const { ethers } = require("hardhat");
+const { create } = require("ts-node");
 
 describe("Test an end to end fixed product market maker and conditional tokens", function () {
   let creator, oracle;
@@ -10,7 +11,7 @@ describe("Test an end to end fixed product market maker and conditional tokens",
   let fpmmDeterministicFactory
 
   const questionId = randomBytes(32);
-  const numOutcomes = 2;
+  const numOutcomes = 10;
   let conditionId
   let collectionIds
 
@@ -22,6 +23,7 @@ describe("Test an end to end fixed product market maker and conditional tokens",
     collateralToken = await (await ethers.getContractFactory("WETH")).deploy();
     fpmmDeterministicFactory = await (
       await ethers.getContractFactory("FPMMDeterministicFactory")).deploy();
+
     conditionId = await conditionalTokens.getConditionId(oracle, questionId, numOutcomes);
     collectionIds = Array.from(
       { length: numOutcomes },
@@ -34,16 +36,18 @@ describe("Test an end to end fixed product market maker and conditional tokens",
     let fixedProductMarketMaker;
     const saltNonce = 2020
     const feeFactor = 3e15.toString() // (0.3%)
-    const initialFunds = 0
-    const initialDistribution = [10, 9]
+    const initialFunds = 10e18.toString()
+    const initialDistribution = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
     const expectedFundedAmounts = initialDistribution.map(n => (1e18 * n).toString())
 
     it("Create conditional tokens", async function () {
+      await collateralToken.deposit({ value: initialFunds, from: creator });
+      await collateralToken.approve(await fpmmDeterministicFactory.getAddress(), initialFunds, { from: creator });
       await conditionalTokens.prepareCondition(oracle.address, questionId, numOutcomes)
     });
 
     it("Create fixed product market maker", async function () {
-      const tx = await fpmmDeterministicFactory.create2FixedProductMarketMaker(
+      const createArgs = [
         saltNonce,
         await conditionalTokens.getAddress(),
         await collateralToken.getAddress(),
@@ -51,7 +55,10 @@ describe("Test an end to end fixed product market maker and conditional tokens",
         feeFactor,
         initialFunds,
         initialDistribution,
-        { from: creator });
+        { from: creator }
+      ]
+      console.log(createArgs)
+      const tx = await fpmmDeterministicFactory.create2FixedProductMarketMaker(...createArgs);
       console.log(tx);
     });
   });
