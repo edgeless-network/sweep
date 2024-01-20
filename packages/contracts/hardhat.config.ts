@@ -49,6 +49,12 @@ const config: HardhatUserConfig = {
       },
     ],
   },
+  namedAccounts: {
+    deployer: {
+      hardhat: 0,
+      edgelessTestnet: "0x08C6fBA53BF2Ae19DBdC330E258B510c1C148e44",
+    },
+  },
 };
 
 export default config;
