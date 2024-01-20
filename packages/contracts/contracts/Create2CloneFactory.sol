@@ -1,9 +1,9 @@
 pragma solidity >=0.4.24 ^0.5.1;
-
+import "hardhat/console.sol";
 contract Create2CloneFactory {
 
     event CloneCreated(address indexed target, address clone);
-    
+
     function cloneConstructor(bytes calldata) external;
 
     function create2Clone(address target, uint saltNonce, bytes memory consData) internal returns (address result) {
@@ -34,7 +34,7 @@ contract Create2CloneFactory {
           let data := add(clone, 0x20)
           result := create2(0, data, len, salt)
         }
-        
+
         require(result != address(0), "create2 failed");
     }
 }
