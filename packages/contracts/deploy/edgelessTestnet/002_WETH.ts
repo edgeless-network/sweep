@@ -3,7 +3,7 @@ import { DeployFunction } from "hardhat-deploy/types";
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre;
-  const { deploy } = deployments;
+  const { deploy, get } = deployments;
   const { deployer } = await getNamedAccounts();
 
   await deploy("WETH", {
@@ -11,6 +11,10 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     from: deployer,
     log: true,
     skipIfAlreadyDeployed: true,
+  });
+
+  await hre.run("verify:verify", {
+    address: (await get("WETH")).address,
   });
 };
 export default func;

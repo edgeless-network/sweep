@@ -12,5 +12,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     log: true,
     skipIfAlreadyDeployed: true,
   });
+
+  await hre.run("verify:verify", {
+    address: (await get("ConditionalTokens")).address,
+  });
 };
 export default func;

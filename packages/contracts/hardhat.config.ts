@@ -22,8 +22,8 @@ const config: HardhatUserConfig = {
     hardhat: {
       deploy: ["./deploy/hardhat/"],
     },
-    edgelessSepoliaTestnet: {
-      deploy: ["./deploy/edgelessSepoliaTestnet/"],
+    edgelessTestnet: {
+      deploy: ["./deploy/edgelessTestnet/"],
       url: "https://edgeless-testnet.rpc.caldera.xyz/http",
       chainId: 202,
       accounts: [process.env.DEPLOYER_PRIVATE_KEY!],
